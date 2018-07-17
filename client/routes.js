@@ -7,15 +7,13 @@ import { getUserThunk } from './store'
 
 class Routes extends React.Component {
   componentDidMount() {
-    console.log('componentDidMount called')
     this.props.getUser()
   }
-  // componentDidUpdate(prevProps) {
-  //   console.log('componentDidUpdate called')
-  //   if (this.props.user.id !== prevProps.user.id) {
-  //     this.props.getUser()
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if (this.props.user.id !== prevProps.user.id) {
+      this.props.getUser()
+    }
+  }
   render() {
     return (
       <Switch>
