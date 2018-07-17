@@ -3,11 +3,11 @@ const router = require('express').Router()
 const { encryptPassword } = require('../../db/models/user')
 
 router.get('/me', (req, res, next) => {
-  res.json(req.user)
+  return res.json(req.user)
 })
 
 router.post('/signup', (req, res, next) => {
-  User.create({
+  return User.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
@@ -18,7 +18,7 @@ router.post('/signup', (req, res, next) => {
 })
 
 router.post('/login', (req, res, next) => {
-  User.findOne({ where: { email: req.body.email } })
+  return User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (!user) {
         const error = new Error('Incorrect email/password combination')

@@ -5,7 +5,11 @@ const morgan = require('morgan')
 const path = require('path')
 const passport = require('passport')
 const session = require('express-session')
-const { User } = require('./db/models')
+const { User, db } = require('./db/models')
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
+const dbStore = new SequelizeStore({ db: db })
+
+dbStore.sync()
 
 if (process.env.NODE_ENV !== 'production') {
   require('../secrets')
@@ -20,6 +24,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: dbStore,
   })
 )
 app.use(passport.initialize())
@@ -29,7 +34,7 @@ passport.serializeUser((user, done) => {
   done(null, user.id)
 })
 passport.deserializeUser((id, done) => {
-  User.findById(id)
+  return User.findById(id)
     .then(user => done(null, user))
     .catch(err => done(err))
 })

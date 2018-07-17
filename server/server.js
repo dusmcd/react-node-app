@@ -3,7 +3,7 @@ const app = require('./app')
 
 const PORT = 8000
 
-db.sync({ force: true }).then(() => {
+db.sync().then(() => {
   app.listen(PORT, 'localhost', () => {
     console.log(`Server listening at port ${PORT}`)
   })
